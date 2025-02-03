@@ -40,7 +40,7 @@ To set up the project locally, follow these steps:
 1. **Clone the repository:**
     ```sh
     git clone https://github.com/Agrawal-Aakarsh/french-laudure-foh.git
-    cd wildfire-compass
+    cd french-laudure-foh
     ```
 
 2. **Install dependencies:**
@@ -53,12 +53,7 @@ To set up the project locally, follow these steps:
     npm run dev
     ```
 
-4. **Build the project for production:**
-    ```sh
-    npm run build
-    ```
-
-5. **Preview the production build:**
+4. **Preview the production build:**
     ```sh
     npm run preview
     ```
