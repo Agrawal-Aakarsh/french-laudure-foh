@@ -1,32 +1,33 @@
-// src/components/dashboard/DailyOverview.tsx
 
-import React, { useState } from 'react';
 import { useReservations } from '../../hooks/useReservations';
 import StatCard from './StatCard';
+import InfoCard from './InfoCard';
 import { DatePicker } from './DatePicker';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useDashboardDate } from '@/context/DashboardDateContext';
 import { 
   Users, 
   Calendar, 
   Award, 
-  UtensilsCrossed, 
-  AlertCircle
+  UtensilsCrossed,
+  AlertTriangle,
+  Clock
 } from 'lucide-react';
 import { format } from 'date-fns';
 
 const DailyOverview: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date('2024-05-20'));
-  const { dailyStats, loading, error } = useReservations(format(selectedDate, 'yyyy-MM-dd'));
+  const {selectedDate, setSelectedDate} = useDashboardDate();
+  const { dailyStats, emailInfos, loading, error } = useReservations(format(selectedDate, 'yyyy-MM-dd'));
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!dailyStats) return <div>No data available</div>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Daily Overview</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Daily Overview</h2>
         <DatePicker 
           date={selectedDate} 
           onDateChange={setSelectedDate}
@@ -61,102 +62,88 @@ const DailyOverview: React.FC = () => {
         />
       </div>
 
-      {/* Special Occasions and Dietary Restrictions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
-              Special Occasions
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {dailyStats.specialOccasions.map((occasion) => (
-                <div key={occasion.type} className="flex justify-between items-center">
-                  <span className="capitalize">{occasion.type}</span>
-                  <span className="px-3 py-1 bg-primary/10 rounded-full text-sm font-medium">
-                    {occasion.count}
-                  </span>
-                </div>
-              ))}
-              {dailyStats.specialOccasions.length === 0 && (
-                <div className="text-muted-foreground">No special occasions today</div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <AlertCircle className="h-5 w-5" />
-              Dietary Restrictions
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {dailyStats.dietaryRestrictions.map((restriction) => (
-                <div key={restriction.type} className="flex justify-between items-center">
-                  <span className="capitalize">{restriction.type.replace('-', ' ')}</span>
-                  <span className="px-3 py-1 bg-primary/10 rounded-full text-sm font-medium">
-                    {restriction.count}
-                  </span>
-                </div>
-              ))}
-              {dailyStats.dietaryRestrictions.length === 0 && (
-                <div className="text-muted-foreground">No dietary restrictions today</div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Staff Notes Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Staff Notes & Reminders</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {dailyStats.vipCount > 0 && (
-              <Alert>
-                <AlertTitle>VIP Service Protocol</AlertTitle>
-                <AlertDescription>
-                  We have {dailyStats.vipCount} VIP guests today. Please ensure enhanced service standards
-                  and personal attention.
-                </AlertDescription>
-              </Alert>
-            )}
-            
-            {dailyStats.specialOccasions.length > 0 && (
-              <Alert>
-                <AlertTitle>Celebration Preparations</AlertTitle>
-                <AlertDescription>
-                  Multiple special occasions today. Coordinate with the kitchen for celebration preparations
-                  and timing.
-                </AlertDescription>
-              </Alert>
-            )}
-
-            {dailyStats.dietaryRestrictions.length > 0 && (
-              <Alert>
-                <AlertTitle>Dietary Alerts</AlertTitle>
-                <AlertDescription>
-                  Several dietary restrictions noted. Please double-check all orders against restrictions
-                  before serving.
-                </AlertDescription>
-              </Alert>
-            )}
-
-            {dailyStats.vipCount === 0 && 
-             dailyStats.specialOccasions.length === 0 && 
-             dailyStats.dietaryRestrictions.length === 0 && (
-              <div className="text-muted-foreground">No special notes for today</div>
+      {/* Info Cards Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Special Occasions Card */}
+        <InfoCard title="Special Occasions" icon={Calendar}>
+          <div className="space-y-3">
+            {dailyStats.specialOccasions.map((occasion) => (
+              <div key={occasion.type} 
+                className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                <span className="capitalize">{occasion.type}</span>
+                <Badge variant="secondary">{occasion.count}</Badge>
+              </div>
+            ))}
+            {dailyStats.specialOccasions.length === 0 && (
+              <div className="text-muted-foreground">No special occasions today</div>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </InfoCard>
+
+        {/* Dietary Restrictions Card */}
+        <InfoCard title="Dietary Restrictions" icon={AlertTriangle}>
+          <div className="space-y-3">
+            {dailyStats.dietaryRestrictions.map((restriction) => (
+              <div key={restriction.type} 
+                className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                <span className="capitalize">{restriction.type.replace('-', ' ')}</span>
+                <Badge variant="secondary">{restriction.count}</Badge>
+              </div>
+            ))}
+            {dailyStats.dietaryRestrictions.length === 0 && (
+              <div className="text-muted-foreground">No dietary restrictions today</div>
+            )}
+          </div>
+        </InfoCard>
+
+        {/* Staff Notes Card - Full Width */}
+        <div className="lg:col-span-2">
+          <InfoCard title="Staff Notes & Action Items" icon={Clock}>
+            <div className="space-y-6">
+              {emailInfos.map((email, idx) => (
+                <Alert key={idx} 
+                  className={`border-l-4 transition-all duration-300 hover:shadow-md ${
+                    email.priority === 'high' 
+                      ? 'border-l-red-500' 
+                      : email.priority === 'medium'
+                      ? 'border-l-yellow-500'
+                      : 'border-l-green-500'
+                  }`}>
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="space-y-2">
+                      <p className="font-medium">{email.guestName}</p>
+                      <AlertDescription className="text-sm text-muted-foreground">
+                        {email.content}
+                      </AlertDescription>
+                      <div className="flex flex-wrap gap-2">
+                        {email.categories?.map((category, cidx) => (
+                          <Badge key={cidx} variant="outline" className="capitalize">
+                            {category.replace("_", " ")}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <Badge className={`whitespace-nowrap px-2 py-0.5 ${
+                      email.priority === 'high'
+                        ? 'bg-red-100 text-red-800'
+                        : email.priority === 'medium'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-green-100 text-green-800'
+                    }`}>
+                      {email.priority.charAt(0).toUpperCase() + email.priority.slice(1)} Priority
+                    </Badge>
+                  </div>
+                </Alert>
+              ))}
+              {emailInfos.length === 0 && (
+                <div className="text-center text-muted-foreground py-6">
+                  No special notes or requests for this date
+                </div>
+              )}
+            </div>
+          </InfoCard>
+        </div>
+      </div>
     </div>
   );
 };

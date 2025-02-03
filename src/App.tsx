@@ -1,41 +1,49 @@
-// src/App.tsx
-import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Layout from './components/layout/Layout';
 import DailyOverview from './components/dashboard/DailyOverview';
+import { GuestProfiles } from './components/guest-profiles';
+import PageTransition from './components/layout/PageTransition';
+import { DashboardDateProvider } from './context/DashboardDateContext';
 
 function App() {
   return (
-    <Layout>
-      <DailyOverview />
-    </Layout>
+    <DashboardDateProvider>
+    <Router>
+      <Layout>
+        <AnimatePresence mode="wait">
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <PageTransition>
+                  <DailyOverview />
+                </PageTransition>
+                
+              } 
+            />
+            <Route 
+              path="/guests" 
+              element={
+                <PageTransition>
+                  <GuestProfiles />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/service-notes" 
+              element={
+                <PageTransition>
+                  <div>Service Notes</div>
+                </PageTransition>
+              } 
+            />
+          </Routes>
+        </AnimatePresence>
+      </Layout>
+    </Router>
+    </DashboardDateProvider>
   );
 }
 
 export default App;
-
-// import React from 'react';
-// import DailyOverview from './components/dashboard/DailyOverview';
-// import { useReservations } from './hooks/useReservations';
-
-// const App = () => {
-//   const { selectedDate, setSelectedDate, stats } = useReservations();
-
-//   return (
-//     <div className="min-h-screen bg-gray-50">
-//       <header className="bg-white shadow-sm">
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-//           <h1 className="text-3xl font-bold text-gray-900">French Laudure FoH</h1>
-//         </div>
-//       </header>
-
-//       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-//         <DailyOverview 
-//           selectedDate={selectedDate}
-//           onDateChange={setSelectedDate}
-//         />
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default App;

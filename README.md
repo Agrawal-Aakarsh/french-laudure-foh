@@ -1,50 +1,69 @@
-# React + TypeScript + Vite
+# French Laudure Data Challenge
+![Dahsboard](https://i.ibb.co/qYn3BjQc/Screenshot-2025-02-02-at-10-24-48-PM.png)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern front-of-house management dashboard for French Laudure restaurant, designed to streamline daily operations and enhance guest experience management.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Daily Overview Dashboard**
+  - Real-time tracking of covers and service distribution
+  - VIP guest monitoring
+  - Special occasions tracking
+  - Dietary restrictions management
+  - Staff notes and action items
 
-## Expanding the ESLint configuration
+- **Guest Profiles Management**
+  - Comprehensive guest directory
+  - Search functionality
+  - Detailed guest history and preferences
+  - Upcoming reservation tracking
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Interactive UI Features**
+  - Date-based navigation
+  - Smooth page transitions
+  - Responsive design
+  - Real-time data updates
 
-- Configure the top-level `parserOptions` property like this:
+## Tech Stack
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- React + TypeScript
+- Tailwind CSS for styling
+- Framer Motion for animations
+- shadcn/ui for UI components
+- React Router for navigation
+- date-fns for date manipulation
+- Lucide React for icons
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Setup
+To set up the project locally, follow these steps:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. **Clone the repository:**
+    ```sh
+    git clone https://github.com/Agrawal-Aakarsh/french-laudure-foh.git
+    cd wildfire-compass
+    ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+2. **Install dependencies:**
+    ```sh
+    npm install
+    ```
+
+3. **Run the development server:**
+    ```sh
+    npm run dev
+    ```
+
+4. **Build the project for production:**
+    ```sh
+    npm run build
+    ```
+
+5. **Preview the production build:**
+    ```sh
+    npm run preview
+    ```
+
+## Contact
+For any questions or feedback, please contact:
+- **Aakarsh Agrawal**
+- Email: [aakarsh@seas.upenn.edu](mailto:aakarsh@seas.upenn.edu)

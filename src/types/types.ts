@@ -53,6 +53,7 @@ export interface EmailInfo {
   type: "special_occasion" | "request" | "dietary" | "general";
   priority: "high" | "medium" | "low";
   needsAction: boolean;
+  categories: string[];
 }
 
 export interface DailyStats {
@@ -70,4 +71,48 @@ export interface DailyStats {
   vipCount: number;
   returningGuestCount: number;
   specialRequests: SpecialRequest[];
+}
+
+export interface RestrictionCount {
+  type: string;
+  count: number;
+}
+
+
+// Guest Profile Types
+
+export interface Review {
+  restaurant_name: string;
+  date: string;
+  rating: number;
+  content: string;
+}
+
+export interface Order {
+  item: string;
+  dietary_tags: string[];
+  price: number;
+}
+
+export interface Reservation {
+  date: string;
+  number_of_people: number;
+  orders: Order[];
+}
+
+export interface Email {
+  date: string;
+  subject: string;
+  combined_thread: string;
+}
+
+export interface Guest {
+  name: string;
+  reviews: Review[];
+  reservations: Reservation[];
+  emails: Email[];
+}
+
+export interface GuestData {
+  diners: Guest[];
 }
