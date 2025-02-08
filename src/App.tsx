@@ -30,14 +30,6 @@ function App() {
                 </PageTransition>
               } 
             />
-            <Route 
-              path="/service-notes" 
-              element={
-                <PageTransition>
-                  <div>Service Notes</div>
-                </PageTransition>
-              } 
-            />
           </Routes>
         </AnimatePresence>
       </Layout>
